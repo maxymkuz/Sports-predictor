@@ -1,1 +1,1 @@
-# freshman-s_project
+# freshman's_project
