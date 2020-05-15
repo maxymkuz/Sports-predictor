@@ -1,15 +1,25 @@
 from flask import Flask
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, Api
 # import jsonify
 
 # Creating an instance of Flask
 app = Flask(__name__)
+# Create the API
+api = Api(app)
+
+
+@app.route("/")
+def index():
+    """Present some documentation"""
+
+    # Open the README file
+    return 'sdklfh jkdhfjk'
 
 
 class Coefficients(Resource):
     def get(self):
         # Do something
-        return {"message": "I did it"}
+        return {"message": "I did it"}, 200
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -25,10 +35,16 @@ class Coefficients(Resource):
         print(args)
         return {'message': 'Device registered', 'data': args}, 201
 
-@app.route('/')
-def hello():
-    return jsonify({'res': 'JJLHFKJHJ JFKDSKJ'})
 
+class TeamCoefficient(Resource):
+    def get(self, hometeam, awayteam):
+        # if not in list of available teams
+            # return {"Message": "was not found"}, 404
+        return {"message": f"I did it. Return res of {hometeam} vs {awayteam}"}, 200
+
+
+api.add_resource(TeamCoefficient,
+                 '/coeffs/<string:hometeam>/<string:awayteam>')
 
 if __name__ == '__main__':
     app.run(debug=True)
