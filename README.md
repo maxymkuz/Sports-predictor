@@ -1,12 +1,13 @@
 # Sport's Predictor
 ### Description
 I am making an API, which will accurately predict an outcome of any
- sports event using profound Machine Learning algorithms. The API is meant
-  to be used as the core of any sports betting platform.
+ sports event using profound Machine Learning algorithms. As sport betting
+  market turnover steadily grows at around +7-8% per year, and is already worth
+   more than 7$ billion, the demand for betting platforms is rising. This
+    API is meant to be used as the core of any sports betting platform.
 
-It also has graphic interface support to provide the same functionality for
- ordinary
- users in a visual and convenient way. 
+It also has graphic interface to provide the same functionality for
+ ordinary users in a visual and convenient way. 
 
 ## Table of contents
 * **[Installation and setup](#setup)**
@@ -43,7 +44,38 @@ pip install pandas numpy matplotlib flask Scikit-learn
 
 <a name="usage"></a>
 # Usage
-More to come
+All responses will have a form
+```json
+{
+  "HomeTeam": "the name of the home team",
+  "AwayTeam": "the name of the away team",
+  "H": "the probability of the home team winning",
+  "A": "the probability of the away team winning",
+  "D": "the probability of the draw"
+}
+```
+#### Sample request
+**Definition**
+
+`GET /HomeTeam/AwayTeam`
+
+**Response**
+
+- `404 Not Found` if such teams doesn't exist in EPL
+
+- `200 OK` Success
+```json
+{
+  "HomeTeam": "Liverpool",
+  "AwayTeam": "Arsenal",
+  "H": "0.53",
+  "A": "0.2",
+  "D": "0.27"
+}
+```
+
+
+
 
 <a name="credits"></a>
 ### Credits
