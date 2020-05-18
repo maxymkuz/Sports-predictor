@@ -1,13 +1,16 @@
 # Sport's Predictor
 ### Description
-I am making an API, which will accurately predict an outcome of any
- sports event using profound Machine Learning algorithms. As sport betting
-  market turnover steadily grows at around +7-8% per year, and is already worth
+I am making an API, which will predict an outcome of any
+ sports event using profound classification Machine Learning algorithms, and
+  figure out coefficients of all possible outcomes(win, draw, lose). As
+  sport betting
+  market turnover steadily grows at about +7-8% per year, and is already worth
    more than 7$ billion, the demand for betting platforms is rising. This
-    API is meant to be used as the core of any sports betting platform.
+    API is meant to be used as the core in setting coefficients at any sports
+     betting platform.
 
-It also has graphic interface to provide the same functionality for
- ordinary users in a visual and convenient way. 
+It also has a website, a graphic interface to provide the same functionality
+ for ordinary users in a more visual and convenient way. 
 
 ## Table of contents
 * **[Installation and setup](#setup)**
@@ -20,7 +23,7 @@ It also has graphic interface to provide the same functionality for
 # Installation and setup 
 
 <a name="local"></a>
-## Hosting web application on local machine
+## Hosting web application on your local machine
 
 #### 1. Installing pip
 You need to have pip installed. If you don't, follow [these instructions
