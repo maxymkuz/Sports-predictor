@@ -87,20 +87,10 @@ class CoefficientsADT:
 
 
 if __name__ == '__main__':
-    import random
-    for j in range(10):
-        x = 0
-        for i in range(100000):
-            if random.random() < 0.287:
-                x += 3.32
-
-        for i in range(100000):
-            if random.random() < 0.465:
-                x += 2.05
-
-        for i in range(100000):
-            if random.random() < 0.246:
-                x += 3.87
-        print(300000/x)
     x = CoefficientsADT("Liverpool", "Arsenal", '2020-04-22', 3.32, 3.88, 2.05)
+    print(x)
+    x.reset_profit()
+    print(x)
+    x.make_profit(10)
+    print(x)
 
