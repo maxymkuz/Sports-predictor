@@ -1,11 +1,9 @@
-import json
-
-
 class CoefficientsADT:
     """ ADT to hold all the information about a future match
     """
 
-    def __init__(self, home_team, away_team, date, home_win=None, away_win=None, draw=None):
+    def __init__(self, home_team, away_team, date, home_win=None,
+                 away_win=None, draw=None):
         self.home_team = home_team
         self.away_team = away_team
         self.date = date
@@ -67,30 +65,30 @@ class CoefficientsADT:
 
     def get_json(self):
         """
-        Converts class into json and returns it
-        :return: json
+        Converts class into dict and returns it
+        :return: dict
         """
         # Round all coefficients to 2 figures after comma
         self._round_coefficients()
-        return json.dumps({"HomeTeam": self.home_team, "AwayTeam":
-                           self.away_team, "date": self.date,
-                           "H": self.home_win, "A": self.away_win,
-                           "D": self.draw})
+        return {'status': 200,
+                "HomeTeam": self.home_team, "AwayTeam":
+                    self.away_team, "date": self.date,
+                "H": self.home_win, "A": self.away_win,
+                "D": self.draw}
 
-    def __str__(self):
-        # Round all coefficients to 2 figures after comma
-        self._round_coefficients()
-        return f"{self.home_team} VS {self.away_team} on {self.date}\n" \
-               f"{self.home_team} win coefficient: {self.home_win}.\n" \
-               f"{self.away_team} win coefficient: {self.away_win}.\n" \
-               f"Draw coefficient: {self.draw}"
+        def __str__(self):
+            # Round all coefficients to 2 figures after comma
+            self._round_coefficients()
+            return f"{self.home_team} VS {self.away_team} on {self.date}\n" \
+                   f"{self.home_team} win coefficient: {self.home_win}.\n" \
+                   f"{self.away_team} win coefficient: {self.away_win}.\n" \
+                   f"Draw coefficient: {self.draw}"
 
-
-if __name__ == '__main__':
-    x = CoefficientsADT("Liverpool", "Arsenal", '2020-04-22', 3.32, 3.88, 2.05)
-    print(x)
-    x.reset_profit()
-    print(x)
-    x.make_profit(10)
-    print(x)
-
+    if __name__ == '__main__':
+        x = CoefficientsADT("Liverpool", "Arsenal", '2020-04-22', 3.32, 3.88,
+                            2.05)
+        print(x)
+        x.reset_profit()
+        print(x)
+        x.make_profit(10)
+        print(x)

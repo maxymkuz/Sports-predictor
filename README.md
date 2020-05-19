@@ -60,6 +60,11 @@ pip install pandas numpy matplotlib flask Scikit-learn ....
 ```
 > Note that on linux you should use pip3 instead
 
+##### To run, enter:
+```bash
+python3 run.py
+```
+
 <a name="usage"></a>
 # Usage
 All responses will have a form
@@ -75,20 +80,23 @@ All responses will have a form
 #### Sample request
 **Definition**
 
-`GET /HomeTeam/AwayTeam`
+`GET ___/<string:hometeam>/<string:awayteam>/<float:profit>`
 
 **Response**
 
 - `404 Not Found` if such teams doesn't exist in EPL
 
+`GET ___/<string:hometeam>/<string:awayteam>/<float:profit>`
 - `200 OK` Success
+
+`___/Arsenal/Crystal%20Palace/5.5`
 ```json
 {
-  "HomeTeam": "Liverpool",
   "AwayTeam": "Arsenal",
-  "H": "0.53",
-  "A": "0.2",
-  "D": "0.27"
+  "HomeTeam": "Crystal Palace",
+  "H": 5.06,
+  "A": 2.01,
+  "D": 2.77
 }
 ```
 

@@ -3,9 +3,9 @@ import pandas as pd
 # Tools for machine learning
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
+import datetime
 
-
-matches = pd.read_csv('../data/seasons_merged.csv')
+matches = pd.read_csv('data/seasons_merged.csv')
 letter_to_result = {'H': 1, 'D': 0, 'A': -1}
 
 
@@ -13,6 +13,7 @@ def get_n_last_matches(matches, date, team, n=10):
     '''
     Get the last n matches of a given team.
     '''
+
     # All matches with a given team
     team_matches = matches[(matches['HomeTeam'] == team) | (matches['AwayTeam'] == team)]
 
@@ -104,6 +105,7 @@ def get_features_for_match(match, matches, n1=10, n2=3):
     match_date = match.Date
     home_team = match.HomeTeam
     away_team = match.AwayTeam
+
     # Get n1 last matches of 2 teams
     home_last = get_n_last_matches(matches, match_date, home_team, n=n1)
     away_last = get_n_last_matches(matches, match_date, away_team, n=n1)
@@ -143,9 +145,9 @@ from time import time
 
 
 def train_classifier(clf, X_train, y_train):
-    ''' Fits a classifier to the training data. '''
+    ''' Fits a cleaning data and exploration to the training data. '''
 
-    # Start the clock, train the classifier, then stop the clock
+    # Start the clock, train the cleaning data and exploration, then stop the clock
     start = time()
     clf.fit(X_train, y_train)
     end = time()
@@ -155,7 +157,7 @@ def train_classifier(clf, X_train, y_train):
 
 
 def predict_labels(clf, features, target):
-    ''' Makes predictions using a fit classifier based on F1 score. '''
+    ''' Makes predictions using a fit cleaning data and exploration based on F1 score. '''
 
     # Start the clock, make predictions, then stop the clock
     start = time()
@@ -171,10 +173,10 @@ def predict_labels(clf, features, target):
 def train_predict(clf, X_train, y_train, X_test, y_test):
     ''' Train and predict using a classifer based on F1 score. '''
 
-    # Indicate the classifier and the training set size
+    # Indicate the cleaning data and exploration and the training set size
     print("Training a {} using a training set size of {}. . .".format(clf.__class__.__name__, len(X_train)))
 
-    # Train the classifier
+    # Train the cleaning data and exploration
     train_classifier(clf, X_train, y_train)
 
     # Print the results of prediction for both training and testing
@@ -191,7 +193,7 @@ def train_predict(clf, X_train, y_train, X_test, y_test):
 
 import time
 time_start = time.time()
-features = pd.read_csv('../data/features.csv')
+features = pd.read_csv('data/features.csv')
 labels = matches.loc[:, 'HTR']
 labels.name = 'label'
 
@@ -208,12 +210,12 @@ y_train = y_train.apply(lambda x: letter_to_result[x])
 
 clf_C = xgb.XGBClassifier(seed=82)
 
-
 clf_C.fit(X_train, y_train)
+
 
 if __name__ == '__main__':
     # make a prediction
     ynew = clf_C.predict_proba(X_test.iloc[-1:])
-
+    print(X_test.iloc[-1:])
     print(ynew[0][0], type(ynew))
 
