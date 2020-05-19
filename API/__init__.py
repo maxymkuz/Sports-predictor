@@ -1,11 +1,33 @@
 from flask import Flask
 from flask_restful import Resource, reqparse, Api
-# import jsonify
+from adt.coefficients_ADT import CoefficientsADT
+from API.predictor import clf_C, get_features_for_match, matches
+import pandas as pd
 
 # Creating an instance of Flask
 app = Flask(__name__)
 # Create the API
 api = Api(app)
+
+# List of EPL teams
+teams = ['Arsenal',
+         'Aston Villa',
+         'Bournemouth',
+         'Brighton',
+         'Burnley',
+         'Chelsea',
+         'Crystal Palace',
+         'Everton',
+         'Leicester City',
+         'Liverpool',
+         'Manchester City',
+         'Manchester United',
+         'Newcastle United',
+         'Southamptony',
+         'Tottenham Hotspur',
+         'Watford',
+         'West Ham United',
+         'Wolverhampton']
 
 
 @app.route("/")
@@ -13,7 +35,7 @@ def index():
     """Present some documentation"""
 
     # Open the README file
-    return 'sdklfh jkdhfjk'
+    return 'Hello!'
 
 
 class Coefficients(Resource):
@@ -37,14 +59,22 @@ class Coefficients(Resource):
 
 
 class TeamCoefficient(Resource):
-    def get(self, hometeam, awayteam):
+    def get(self, hometeam, awayteam, profit):
         # if not in list of available teams
-            # return {"Message": "was not found"}, 404
+        if hometeam not in teams or awayteam not in teams:
+            return {"Message": "Teams don't exist"}, 404
+        match = pd.DataFrame(data={'Date': '2020-07-22',
+                 'HomeTeam': hometeam,
+                 'AwayTeam': awayteam}, columns=['Date', 'HomeTeam', 'AwayTeam'])
+
+        match_features = get_features_for_match(match, matches, 10, 3)
+        probabilities = clf_C.predict_proba(match_features)
+        print(probabilities)
         return {"message": f"I did it. Return res of {hometeam} vs {awayteam}"}, 200
 
 
 api.add_resource(TeamCoefficient,
-                 '/coeffs/<string:hometeam>/<string:awayteam>')
+                 '/coeffs/<string:hometeam>/<string:awayteam>/<float:profit>')
 
 if __name__ == '__main__':
     app.run(debug=True)

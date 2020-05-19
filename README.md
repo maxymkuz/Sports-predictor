@@ -26,12 +26,10 @@ I am making an API, which will predict an outcome of any
     API is meant to be used as the core in setting coefficients at any sports
      betting platform.
 
-It also has a website, a graphic interface to provide the same functionality
- for ordinary users in a more visual and convenient way. 
 
 ## Table of contents
 * **[Installation and setup](#setup)**
-    * [Hosting web application on local machine](#local)
+    * [Hosting an API on local machine](#local)
 * **[Usage](#usage)**
 * [Credits](#credits)
 * [License](#license)
@@ -57,7 +55,7 @@ pip install -r requirements.txt
 ##### b) Manual installation
 You need to do the following in your project directory:
 ```bash
-pip install pandas numpy matplotlib flask Scikit-learn
+pip install pandas numpy matplotlib flask Scikit-learn ....
 
 ```
 > Note that on linux you should use pip3 instead
