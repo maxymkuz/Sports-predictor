@@ -18,8 +18,8 @@
 # Sport's Predictor
 ### Description
 I am making an API, which will predict an outcome of any
- sports event using profound classification Machine Learning algorithms, and
-  figure out coefficients of all possible outcomes(win, draw, lose). As
+ sports event using profound regression Machine Learning algorithms, and
+  figure out coefficients of ajupll possible outcomes(win, draw, lose). As
   sport betting
   market turnover steadily grows at about +7-8% per year, and is already worth
    more than 7$ billion, the demand for betting platforms is rising. This
@@ -36,7 +36,7 @@ I am making an API, which will predict an outcome of any
 
 <a name="setup"></a>
 # Installation and setup 
-
+### [To use an app on server, click here](kuzyshyn.pythonanywhere.com )
 <a name="local"></a>
 ## Hosting web application on your local machine
 

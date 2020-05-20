@@ -3,7 +3,7 @@ import pandas as pd
 # Tools for machine learning
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
-import datetime
+import time
 
 matches = pd.read_csv('data/seasons_merged.csv')
 letter_to_result = {'H': 1, 'D': 0, 'A': -1}
@@ -130,68 +130,8 @@ def get_features_for_match(match, matches, n1=10, n2=3):
     return res.loc[0]
 
 
-def create_features(matches):
-    '''
-    Iterate throu all matches, create features for every single of them
-    if possible and aggregate them together
-    '''
-    print('Generating features... Please wait for one or two minutes')
-    # Creates dataframe with features for all matches
-    matches_features = matches.apply(lambda x: get_features_for_match(x, matches, n1=12, n2=3), axis=1)
-    return matches_features
 
 
-from time import time
-
-
-def train_classifier(clf, X_train, y_train):
-    ''' Fits a cleaning data and exploration to the training data. '''
-
-    # Start the clock, train the cleaning data and exploration, then stop the clock
-    start = time()
-    clf.fit(X_train, y_train)
-    end = time()
-
-    # Print the results
-    print("Trained model in {:.4f} seconds".format(end - start))
-
-
-def predict_labels(clf, features, target):
-    ''' Makes predictions using a fit cleaning data and exploration based on F1 score. '''
-
-    # Start the clock, make predictions, then stop the clock
-    start = time()
-    y_pred = clf.predict_proba(features)
-
-    end = time()
-    # Print and return results
-    print("Made predictions in {:.4f} seconds.".format(end - start))
-    # f1_score(target, y_pred, pos_label='H'),
-    return sum(target == y_pred) / float(len(y_pred))
-
-
-def train_predict(clf, X_train, y_train, X_test, y_test):
-    ''' Train and predict using a classifer based on F1 score. '''
-
-    # Indicate the cleaning data and exploration and the training set size
-    print("Training a {} using a training set size of {}. . .".format(clf.__class__.__name__, len(X_train)))
-
-    # Train the cleaning data and exploration
-    train_classifier(clf, X_train, y_train)
-
-    # Print the results of prediction for both training and testing
-    # f1,
-    f1 = 'hz'
-    acc = predict_labels(clf, X_train, y_train)
-    print(f1, acc)
-    print("F1 score and accuracy score for training set: {:.4f} , {:.4f}.".format(f1, acc))
-
-    # f1,
-    acc = predict_labels(clf, X_test, y_test)
-    print("F1 score and accuracy score for test set: {:.4f} , {:.4f}.".format(f1, acc))
-
-
-import time
 time_start = time.time()
 features = pd.read_csv('data/features.csv')
 labels = matches.loc[:, 'HTR']
