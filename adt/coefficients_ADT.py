@@ -72,23 +72,24 @@ class CoefficientsADT:
         self._round_coefficients()
         return {'status': 200,
                 "HomeTeam": self.home_team, "AwayTeam":
-                    self.away_team, "date": self.date,
-                "H": self.home_win, "A": self.away_win,
-                "D": self.draw}
+                    self.away_team, "m_date": self.date,
+                "home_win": self.home_win, "away_win": self.away_win,
+                "draw": self.draw}
 
-        def __str__(self):
-            # Round all coefficients to 2 figures after comma
-            self._round_coefficients()
-            return f"{self.home_team} VS {self.away_team} on {self.date}\n" \
-                   f"{self.home_team} win coefficient: {self.home_win}.\n" \
-                   f"{self.away_team} win coefficient: {self.away_win}.\n" \
-                   f"Draw coefficient: {self.draw}"
+    def __str__(self):
+        # Round all coefficients to 2 figures after comma
+        self._round_coefficients()
+        return f"{self.home_team} VS {self.away_team} on {self.date}\n" \
+               f"{self.home_team} win coefficient: {self.home_win}.\n" \
+               f"{self.away_team} win coefficient: {self.away_win}.\n" \
+               f"Draw coefficient: {self.draw}"
 
-    if __name__ == '__main__':
-        x = CoefficientsADT("Liverpool", "Arsenal", '2020-04-22', 3.32, 3.88,
-                            2.05)
-        print(x)
-        x.reset_profit()
-        print(x)
-        x.make_profit(10)
-        print(x)
+
+if __name__ == '__main__':
+    x = CoefficientsADT("Liverpool", "Arsenal", '2020-04-22', 3.32, 3.88,
+                        2.05)
+    print(x)
+    x.reset_profit()
+    print(x)
+    x.make_profit(10)
+    print(x)

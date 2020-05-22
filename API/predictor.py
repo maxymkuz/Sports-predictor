@@ -3,6 +3,7 @@ import pandas as pd
 # Tools for machine learning
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
+import pickle
 import time
 
 matches = pd.read_csv('data/seasons_merged.csv')
@@ -139,23 +140,8 @@ labels.name = 'label'
 
 print('Generated features in', time.time() - time_start, 'sec.')
 
-# Splitting the data into training and test sets:
-X_train, X_test, y_train, y_test = train_test_split(features, labels,
-                                                    test_size=50,
-                                                    random_state=2,
-                                                    stratify=labels)
-
-# Classifiers
-y_train = y_train.apply(lambda x: letter_to_result[x])
-
-clf_C = xgb.XGBClassifier(seed=82)
-
-clf_C.fit(X_train, y_train)
+# Reading a pre-made classifier from a file
+clf_boosted = pickle.load(open('models/finalized_home.sav', 'rb'))
 
 
-if __name__ == '__main__':
-    # make a prediction
-    ynew = clf_C.predict_proba(X_test.iloc[-1:])
-    print(X_test.iloc[-1:])
-    print(ynew[0][0], type(ynew))
 
