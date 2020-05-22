@@ -2,6 +2,8 @@ import pandas as pd
 # Tools for machine learning
 import pickle
 import time
+import xgboost as xgb
+from sklearn.model_selection import train_test_split
 
 matches = pd.read_csv('data/seasons_merged.csv')
 letter_to_result = {'H': 1, 'D': 0, 'A': -1}
@@ -127,15 +129,6 @@ def get_features_for_match(match, matches, n1=10, n2=3):
     #     print(result.loc[0])
     return res.loc[0]
 
-time_start = time.time()
-features = pd.read_csv('data/features.csv')
-labels = matches.loc[:, 'HTR']
-labels.name = 'label'
-
-print('Generated features in', time.time() - time_start, 'sec.')
-
-# Reading a pre-made classifier from a file
-clf_boosted = pickle.load(open('models/finalized_home.sav', 'rb'))
 
 teams = ['Arsenal',
          'Aston Villa',
@@ -208,3 +201,26 @@ def get_cached(hometeam, awayteam):
             draw = float(draw)
             return home_win, draw, away_win
 
+
+features = pd.read_csv('data/features.csv')
+features = features.drop('Unnamed: 0', axis=1)
+labels = matches.loc[:, 'HTR']
+labels.name = 'label'
+labels = labels.iloc[100:]
+X_train, X_test, y_train, y_test = train_test_split(features, labels,
+                                                    test_size = 100,
+                                                    random_state = 2,
+                                                    stratify = labels)
+
+
+clf_boosted = xgb.XGBClassifier(base_score=0.5, colsample_bylevel=1, colsample_bytree=0.8,
+       gamma=0.4, learning_rate=0.1, max_delta_step=0, max_depth=3,
+       min_child_weight=3, missing=None, n_estimators=40, nthread=-1,
+       objective='binary:logistic', reg_alpha=1e-05, reg_lambda=1,
+       scale_pos_weight=1, seed=2, silent=True, subsample=0.8)
+
+
+# Main training of the model
+start = time.time()
+print('training home model')
+clf_boosted.fit(X_train, y_train)

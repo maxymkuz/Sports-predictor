@@ -7,9 +7,9 @@ class CoefficientsADT:
         self.home_team = home_team
         self.away_team = away_team
         self.date = date
-        self.home_win = home_win
-        self.away_win = away_win
-        self.draw = draw
+        self.home_win = 1/home_win
+        self.away_win = 1/away_win
+        self.draw = 1/draw
         self.profit = 0
 
     def _round_coefficients(self):
@@ -30,10 +30,9 @@ class CoefficientsADT:
         # Calculating how much profit coefficients currently have
         profit = 1 / self.home_win + 1 / self.away_win + 1 / self.draw
         # Normalize coefficients
-        self.home_win *= profit
-        self.away_win *= profit
-        self.draw *= profit
-        profit = 1 / self.home_win + 1 / self.away_win + 1 / self.draw
+        self.home_win /= profit
+        self.away_win /= profit
+        self.draw /= profit
 
     def make_profit(self, percentage):
         """
@@ -47,9 +46,9 @@ class CoefficientsADT:
         # Make profit, or loss if percentage is negative
         profit = 1 + percentage / 100
         print(profit)
-        self.home_win /= profit
-        self.away_win /= profit
-        self.draw /= profit
+        self.home_win *= profit
+        self.away_win *= profit
+        self.draw *= profit
 
     def set_coeff(self, home_win, away_win, draw):
         """
@@ -72,7 +71,7 @@ class CoefficientsADT:
         self._round_coefficients()
         return {'status': 200,
                 "HomeTeam": self.home_team, "AwayTeam":
-                    self.away_team, "m_date": self.date,
+                    self.away_team,
                 "home_win": self.home_win, "away_win": self.away_win,
                 "draw": self.draw}
 
@@ -86,8 +85,8 @@ class CoefficientsADT:
 
 
 if __name__ == '__main__':
-    x = CoefficientsADT("Liverpool", "Arsenal", '2020-04-22', 3.32, 3.88,
-                        2.05)
+    x = CoefficientsADT("Liverpool", "Arsenal", '2020-04-22', 0.5443, 0.252432,
+                        0.4)
     print(x)
     x.reset_profit()
     print(x)

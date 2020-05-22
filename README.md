@@ -2,6 +2,28 @@
 ![](https://img.shields.io/github/last-commit/maxymkuz/Sports-predictor)
 ![](https://img.shields.io/github/languages/code-size/maxymkuz/Sports-predictor)
 
+# Sport's Predictor
+### Description
+I am making an API, which will predict an outcome of any
+ sports event using profound regression Machine Learning algorithms, and
+  figure out coefficients of all possible outcomes(win, draw, lose) with
+   option to make a profit from a bet. As
+  sport betting
+  market turnover steadily grows at about +7-8% per year, and is already worth
+   more than 7$ billion, the demand for betting platforms is rising. This
+    API is meant to be used as the core in setting coefficients at any sports
+     betting platform(preferably websites).
+
+
+## Table of contents
+* **[Installation and setup](#setup)**
+    * [Hosting an API on local machine](#local)
+* **[Usage](#usage)**
+    * [Via GET requests](#local)
+    * [Example code snippet for developing websites](#local)
+* [Credits](#credits)
+* [License](#license)
+
 ### Wiki pages:
 
 [№0. Goal of the project, Q&A](https://github.com/maxymkuz/Sports-predictor/wiki/%D0%94%D0%97-%E2%84%960.-%D0%9F%D1%80%D0%B5%D0%B4%D1%81%D1%82%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F.-%D0%9F%D0%B8%D1%82%D0%B0%D0%BD%D0%BD%D1%8F-%D1%82%D0%B0-%D0%B2%D1%96%D0%B4%D0%BF%D0%BE%D0%B2%D1%96%D0%B4%D1%96.)
@@ -14,25 +36,6 @@
 
 [№4.](https://github.com/maxymkuz/Sports-predictor/wiki/%D0%94%D0%97-%E2%84%963.-ADT)
 
-
-# Sport's Predictor
-### Description
-I am making an API, which will predict an outcome of any
- sports event using profound regression Machine Learning algorithms, and
-  figure out coefficients of ajupll possible outcomes(win, draw, lose). As
-  sport betting
-  market turnover steadily grows at about +7-8% per year, and is already worth
-   more than 7$ billion, the demand for betting platforms is rising. This
-    API is meant to be used as the core in setting coefficients at any sports
-     betting platform.
-
-
-## Table of contents
-* **[Installation and setup](#setup)**
-    * [Hosting an API on local machine](#local)
-* **[Usage](#usage)**
-* [Credits](#credits)
-* [License](#license)
 
 <a name="setup"></a>
 # Installation and setup 
@@ -55,32 +58,42 @@ pip install -r requirements.txt
 ##### b) Manual installation
 You need to do the following in your project directory:
 ```bash
-pip install pandas numpy matplotlib flask Scikit-learn ....
+pip install xgboost pandas numpy matplotlib flask flask-restful scikit-learn
 
 ```
 > Note that on linux you should use pip3 instead
 
-##### To run, enter:
+##### To run locally, enter the following command
 ```bash
 python3 run.py
 ```
 
 <a name="usage"></a>
 # Usage
+
+### Profit setting
+User have the possibility to adjust profit, you want to make from a bets on
+ average. Profit has to be of **float** type, and is placed in the last
+  place in request url. If you want to set 5% profit, then the request
+   should have a form of path/HomeTeam/AwayTeam/**5.0**
+
+
 All responses will have a form
 ```json
 {
+  "Status": "200 if Success, 40X otherwise",
   "HomeTeam": "the name of the home team",
   "AwayTeam": "the name of the away team",
-  "H": "the probability of the home team winning",
-  "A": "the probability of the away team winning",
-  "D": "the probability of the draw"
+  "home_win": "the probability of the home team winning",
+  "away_win": "the probability of the away team winning",
+  "draw": "the probability of the draw"
 }
 ```
 #### Sample request
+###### Online usage path: path=`maxkuz.pythonanywhere.com/`
+###### for local usage path=`http://0.0.0.0:1300/`
 **Definition**
-
-`GET ___/<string:hometeam>/<string:awayteam>/<float:profit>`
+`GET path/<string:hometeam>/<string:awayteam>/<float:profit>`
 
 **Response**
 
@@ -89,19 +102,29 @@ All responses will have a form
 `GET ___/<string:hometeam>/<string:awayteam>/<float:profit>`
 - `200 OK` Success
 
-`___/Arsenal/Crystal%20Palace/5.5`
+`maxkuz.pythonanywhere.com/Arsenal/Crystal%20Palace/0.0`
 ```json
 {
-  "AwayTeam": "Arsenal",
-  "HomeTeam": "Crystal Palace",
-  "H": 5.06,
-  "A": 2.01,
-  "D": 2.77
+  "AwayTeam": "Liverpool",
+  "HomeTeam": "Arsenal",
+  "home_win": 3.08,
+  "away_win": 3.28,
+  "draw": 2.7,
+  "status": 200
 }
 ```
-
-
-
+##### Now lets set profit to 10.5% _(All coefficients will increase by 10.5%)_
+`maxkuz.pythonanywhere.com/Arsenal/Liverpool/10.5`
+```json
+{
+  "AwayTeam": "Liverpool",
+  "HomeTeam": "Arsenal",
+  "home_win": 3.4,
+  "away_win": 3.62,
+  "draw": 2.98,
+  "status": 200
+}
+```
 
 <a name="credits"></a>
 ### Credits
