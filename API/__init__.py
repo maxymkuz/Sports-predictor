@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_restful import Resource, reqparse, Api
 from adt.coefficients_ADT import CoefficientsADT
-from API.predictor import get_features_for_match, matches
+from API.predictor import get_features_for_match, matches, get_cached
 import pandas as pd
 import pickle
 
@@ -22,16 +22,16 @@ teams = ['Arsenal',
          'Chelsea',
          'Crystal Palace',
          'Everton',
-         'Leicester City',
+         'Leicester',
          'Liverpool',
-         'Manchester City',
-         'Manchester United',
-         'Newcastle United',
-         'Southamptony',
-         'Tottenham Hotspur',
+         'Man City',
+         'Man United',
+         'Newcastle',
+         'Southampton',
+         'Tottenham',
          'Watford',
-         'West Ham United',
-         'Wolverhampton']
+         'West Ham',
+         'Wolves']
 
 
 @app.route("/")
@@ -54,6 +54,19 @@ class TeamCoefficient(Resource):
         if hometeam not in teams or awayteam not in teams:
             return {"Message": "Teams don't exist"}, 404
         try:
+            # If a team exists in a cache
+            if get_cached(hometeam, awayteam):
+                print('got it')
+                home_win, draw, away_win = get_cached(hometeam, awayteam)
+                coefficients = CoefficientsADT(hometeam, awayteam,
+                                               '2020-07-22',
+                                               away_win, home_win, draw)
+
+                # Resetting all the profit, and setting it back(just in case)
+                coefficients.reset_profit()
+                coefficients.make_profit(profit)
+                print(coefficients.get_json())
+                return jsonify(coefficients.get_json())
             # Creating a new match
             match = pd.DataFrame(data={'Date': ['2020-07-22'],
                                        'HomeTeam': [hometeam],

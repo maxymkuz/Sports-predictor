@@ -1,8 +1,5 @@
 import pandas as pd
-
 # Tools for machine learning
-from sklearn.model_selection import train_test_split
-import xgboost as xgb
 import pickle
 import time
 
@@ -130,9 +127,6 @@ def get_features_for_match(match, matches, n1=10, n2=3):
     #     print(result.loc[0])
     return res.loc[0]
 
-
-
-
 time_start = time.time()
 features = pd.read_csv('data/features.csv')
 labels = matches.loc[:, 'HTR']
@@ -143,5 +137,74 @@ print('Generated features in', time.time() - time_start, 'sec.')
 # Reading a pre-made classifier from a file
 clf_boosted = pickle.load(open('models/finalized_home.sav', 'rb'))
 
+teams = ['Arsenal',
+         'Aston Villa',
+         'Bournemouth',
+         'Brighton',
+         'Burnley',
+         'Chelsea',
+         'Crystal Palace',
+         'Everton',
+         'Leicester',
+         'Liverpool',
+         'Man City',
+         'Man United',
+         'Newcastle',
+         'Southampton',
+         'Tottenham',
+         'Watford',
+         'West Ham',
+         'Wolves']
 
+
+def save_to_cache():
+    """
+    Saves the current standings into cache, so that you
+    don't have to compute them every time
+    """
+    arr = []
+    for hometeam in teams:
+        for awayteam in teams:
+            if hometeam == awayteam:
+                continue
+            # Creating a new match
+            match = pd.DataFrame(data={'Date': ['2020-07-22'],
+                                       'HomeTeam': [hometeam],
+                                       'AwayTeam': [awayteam], },
+                                 columns=['Date', 'HomeTeam',
+                                          'AwayTeam'])
+
+            # Creating features for a given match
+            match_features = get_features_for_match(match.iloc[0],
+                                                    matches, 20, 3)
+            df = pd.DataFrame(data={'Unnamed: 0': [3333]},
+                              columns=['Unnamed: 0'])
+            # Filling a dataframe with features, needed for an analysis
+            for i in match_features.to_frame().reset_index()['index']:
+                df[i] = match_features[i]
+            # Using a model to predict an outcome, returns an array
+            df = df.drop(['Unnamed: 0'], axis=1)
+            home_win, draw, away_win = clf_boosted.predict_proba(df)[0]
+            arr.append(','.join((hometeam, awayteam, str(home_win), str(draw),
+                                                         str(away_win))))
+
+
+    with open('data/coefficients.txt', 'w') as f:
+        f.write('\n'.join(arr))
+
+
+def get_cached(hometeam, awayteam):
+    """
+    Uploads the result from the cache, if possible
+    """
+    with open('data/coefficients.txt', 'r') as f:
+        for line in f:
+            line = line.strip()
+            home_team, away_team, away_win, draw, home_win = line.split(',')
+            if hometeam != home_team or awayteam != away_team:
+                continue
+            home_win = float(home_win)
+            away_win = float(away_win)
+            draw = float(draw)
+            return home_win, draw, away_win
 
