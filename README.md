@@ -7,22 +7,23 @@
 I am making an API, which will predict an outcome of any
  sports event using profound regression Machine Learning algorithms, and
   figure out coefficients of all possible outcomes(win, draw, lose) with
-   option to make a profit from a bet. As
+   an option to make a fixed amount of profit from each bet. As
   sport betting
   market turnover steadily grows at about +7-8% per year, and is already worth
    more than 7$ billion, the demand for betting platforms is rising. This
     API is meant to be used as the core in setting coefficients at any sports
-     betting platform, especially web-based.
+     betting platform, especially web-based ones.
 
 
 ## Table of contents
 * **[Installation and setup](#setup)**
-    * [Hosting an API on local machine](#local)
+    * [For hosting an API on local machine](#local)
 * **[Usage](#usage)**
     * [Locally, via GET requests](#local)
     * [Using GET requests on my server](#server)
     * [Example code snippet for developing websites](#example)
-* [Data used](#data)
+* [Modules and data explained](#data)
+* [Contribution](#contribute)
 * [Credits](#credits)
 * [License](#license)
 
@@ -36,13 +37,17 @@ I am making an API, which will predict an outcome of any
 
 [№3. ADT](https://github.com/maxymkuz/Sports-predictor/wiki/%D0%94%D0%97-%E2%84%963.-ADT)
 
-[№4.](https://github.com/maxymkuz/Sports-predictor/wiki/%D0%94%D0%97-%E2%84%963.-ADT)
+[№4.Gathering data and the research itself](https://github.com/maxymkuz/Sports-predictor/wiki/%D0%94%D0%97-%E2%84%964.-%D0%9D%D0%B0%D0%BA%D0%BE%D0%BF%D0%B8%D1%87%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B4%D0%B0%D0%BD%D0%B8%D1%85-%D1%82%D0%B0-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B4%D0%BE%D1%81%D0%BB%D1%96%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F.)
 
+[№5.Conclusions](https://github.com/maxymkuz/Sports-predictor/wiki/%D0%94%D0%97-%E2%84%964.-%D0%9D%D0%B0%D0%BA%D0%BE%D0%BF%D0%B8%D1%87%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B4%D0%B0%D0%BD%D0%B8%D1%85-%D1%82%D0%B0-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B4%D0%BE%D1%81%D0%BB%D1%96%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F.)
 
 <a name="setup"></a>
 # Installation and setup for local usage
-> You can skip this section if you would use it on my web server 
+> You can skip this section if you would use it on a web server 
+
 <a name="local"></a>
+If you need reliability and independence from internet services, you
+ can deploy an API on your local machine:
 ## Hosting web application on your local machine
 
 #### 1. Installing pip
@@ -87,6 +92,9 @@ Key feature of this API is that the user is able to adjust profit, (s)he
    request
    should have a form of _path_/HomeTeam/AwayTeam/**5.0**
 
+**Definition**
+
+`GET path/<string:hometeam>/<string:awayteam>/<float:profit>`
 
 All responses will have a form
 ```json
@@ -102,9 +110,6 @@ All responses will have a form
 #### Sample request
 ###### For server requests, path=`maxkuz.pythonanywhere.com/`
 ###### for local usage, path=`http://0.0.0.0:1300/`
-**Definition**
-
-`GET path/<string:hometeam>/<string:awayteam>/<float:profit>`
 
 **Response**
 
@@ -117,6 +122,7 @@ All responses will have a form
 - `404 Not Found` if such teams doesn't exist in EPL
 
 **Example requests**
+
 `maxkuz.pythonanywhere.com/Arsenal/Liverpool/0.0`
 ```json
 {
@@ -134,12 +140,13 @@ All responses will have a form
 {
   "AwayTeam": "Liverpool",
   "HomeTeam": "Arsenal",
-  "home_win": 3.4,
-  "away_win": 3.62,
-  "draw": 2.98,
+  "home_win": 2.97,
+  "away_win": 2.79,
+  "draw": 2.44,
   "status": 200
 }
 ```
+> Notice that 
 
 <a name="example"></a>
 #### Example code snippet for developing websites
@@ -149,8 +156,8 @@ import requests
 
 url = "http://maxkuz.pythonanywhere.com/"
 
-home_team = "Liverpool"
 away_team = "Chelsea"
+home_team = "Man City"
 profit = 5.0
 
 response = requests.get(url + f"{home_team}/{away_team}/{profit}")
@@ -162,31 +169,46 @@ Response:
 {
     "AwayTeam": "Chelsea",
     "HomeTeam": "Man City",
-    "away_win": 11.06,
-    "draw": 3.01,
-    "home_win": 1.84,
+    "away_win": 10.17,
+    "draw": 2.77,
+    "home_win": 1.69,
     "status": 200
 }
 ```
 <a name="data"></a>
-### Data used 
-All .csv files were donloaded [here.](https://datahub.io/sports-data/english-premier-league)
+## Modules and Data explained
+If you want to play around with the code, which I used for the feature
+ creating and Machine Learning modules training, I encourage you to check
+  [train_model.ipynb](https://github.com/maxymkuz/Sports-predictor/blob/master/train_model.ipynb)
+   module.
+
+> [/adt/coefficientsADT.py](https://github.com/maxymkuz/Sports-predictor/blob/master/adt/coefficients_ADT.py) - main module to work with coefficients
+>
+> [/api/predictor.py](https://github.com/maxymkuz/Sports-predictor/blob/master/API/predictor.py) is used to create features for future prediction
+> 
+>[/api/__init\__.py](https://github.com/maxymkuz/Sports-predictor/blob/master/API/__init__.py) is main module, where all functions for API are processed 
+
+All .csv files can be downloaded [here.](https://datahub.io/sports-data/english
+-premier-league)
 
 Each match in database has total of 62 statistical criteria, like 
 > **Date** = Match Date (dd/mm/yy);
 **FTHG** = Full Time Home Team Goals;
 **FTR** = Full Time Result (H=Home Win, D=Draw, A=Away Win);
-**HTR** = Half Time Result (H=Home Win, D=Draw, A=Away Win);
 **HS** = Home Team Shots;
-**HST** = Home Team Shots on Target;
-**HHW** = Home Team Hit Woodwork;
-**HF** = Home Team Fouls Committed.`
+**HF** = Home Team Fouls Committed...`
 
 Full list of abbreviations you can find [here.](https://github.com/woobe/footballytics/blob/master/data/notes.txt)
 
+<a name="contribute"></a>
+### Contributing
+For now, I'm the only contributor to this project. If you have an idea on
+ how to improve it, I highly encourage you to set up the project using
+  abovementioned instructions, and open the pull request.
+
 <a name="credits"></a>
 ### Credits
-Maxym Kuzyshyn. More to come
+Maxym Kuzyshyn. 2020))
 <a name="license"></a>
 ### License
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/maxymkuz/Sports-predictor/blob/master/LICENSE)

@@ -46,9 +46,9 @@ class CoefficientsADT:
         # Make profit, or loss if percentage is negative
         profit = 1 + percentage / 100
         print(profit)
-        self.home_win *= profit
-        self.away_win *= profit
-        self.draw *= profit
+        self.home_win /= profit
+        self.away_win /= profit
+        self.draw /= profit
 
     def set_coeff(self, home_win, away_win, draw):
         """
@@ -72,7 +72,7 @@ class CoefficientsADT:
         return {'status': 200,
                 "HomeTeam": self.home_team, "AwayTeam":
                     self.away_team,
-                "home_win": self.home_win, "away_win": self.away_win,
+                "home_win": self.away_win, "away_win": self.home_win,
                 "draw": self.draw}
 
     def __str__(self):
@@ -85,8 +85,8 @@ class CoefficientsADT:
 
 
 if __name__ == '__main__':
-    x = CoefficientsADT("Liverpool", "Arsenal", '2020-04-22', 0.5443, 0.252432,
-                        0.4)
+    x = CoefficientsADT("Liverpool", "Arsenal", '2020-04-22', 3.32, 3.88,
+                        2.05)
     print(x)
     x.reset_profit()
     print(x)
