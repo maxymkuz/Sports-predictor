@@ -5,12 +5,12 @@
 # Sport's Predictor
 ### Description
 I am making an API, which will predict an outcome of any
- sports event using profound regression Machine Learning algorithms, and
+ sports event using profound supervised classification and regression Machine
+  Learning algorithms, and
   figure out coefficients of all possible outcomes(win, draw, lose) with
    an option to make a fixed amount of profit from each bet. As
   sport betting
-  market turnover steadily grows at about +7-8% per year, and is already worth
-   more than 7$ billion, the demand for betting platforms is rising. This
+  market turnover steadily grows at about +7-8% per year, the demand for betting platforms is rising. This
     API is meant to be used as the core in setting coefficients at any sports
      betting platform, especially web-based ones.
 
@@ -39,41 +39,37 @@ I am making an API, which will predict an outcome of any
 
 [№4.Gathering data and the research itself](https://github.com/maxymkuz/Sports-predictor/wiki/%D0%94%D0%97-%E2%84%964.-%D0%9D%D0%B0%D0%BA%D0%BE%D0%BF%D0%B8%D1%87%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B4%D0%B0%D0%BD%D0%B8%D1%85-%D1%82%D0%B0-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B4%D0%BE%D1%81%D0%BB%D1%96%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F.)
 
-[№5.Conclusions](https://github.com/maxymkuz/Sports-predictor/wiki/%D0%94%D0%97-%E2%84%964.-%D0%9D%D0%B0%D0%BA%D0%BE%D0%BF%D0%B8%D1%87%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B4%D0%B0%D0%BD%D0%B8%D1%85-%D1%82%D0%B0-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B4%D0%BE%D1%81%D0%BB%D1%96%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F.)
+[№5.Conclusions](https://github.com/maxymkuz/Sports-predictor/wiki/%D0%94%D0%97-%E2%84%965.-%D0%90%D0%BD%D0%B0%D0%BB%D1%96%D0%B7-%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%D1%96%D0%B2-%D1%82%D0%B0-%D0%B2%D0%B8%D1%81%D0%BD%D0%BE%D0%B2%D0%BA%D0%B8.)
 
 <a name="setup"></a>
 # Installation and setup for local usage
 > You can skip this section if you would use it on a web server 
 
 <a name="local"></a>
-If you need reliability and independence from internet services, you
+Otherwise, if you need reliability and independence from internet services, you
  can deploy an API on your local machine:
 ## Hosting web application on your local machine
 
 #### 1. Installing pip
-You need to have pip installed. If you don't, follow [these instructions
+You need to have pip installed. If you have't, follow [these instructions
 ](https://www.makeuseof.com/tag/install-pip-for-python/) for
  your operating system.
 
-#### 2. Getting lates version of project from git
+#### 2. Getting latest version of project from git
 `git clone https://github.com/maxymkuz/Sports-predictor`
 #### 3. Installing prerequisites
-##### a) from requirements.txt
-You need to execute the following command from the root directory of this
- project:
- ```bash
-pip install -r requirements.txt
-```
-##### b) Manual installation
-You need to do the following in your project directory:
-```bash
-pip install xgboost pandas numpy matplotlib flask flask-restful scikit-learn
+##### a) from requirements.txt. E
+>Execute the following command from the root directory of this project:
 
-```
+`pip install -r requirements.txt`
+
+##### b) Manual installation
+`pip install xgboost pandas numpy matplotlib flask flask-restful scikit-learn`
+
 > Note that on linux you should use pip3 instead
->
+
 <a name="local"></a>
-##### To run, enter the following command
+##### To run, use the following command from root of the project
 ```bash
 python3 run.py
 ```
@@ -81,7 +77,7 @@ python3 run.py
 <a name="usage"></a>
 # Usage
 <a name="server"></a>
-### [kuzyshyn.pythonanywhere.com - API domain](kuzyshyn.pythonanywhere.com )
+### [kuzyshyn.pythonanywhere.com - API domain](https://maxkuz.pythonanywhere.com/)
 
 ### Profit setting
 Key feature of this API is that the user is able to adjust profit, (s)he
@@ -119,7 +115,8 @@ All responses will have a form
 
 `GET path/None/None/None`
 
-- `404 Not Found` if such teams doesn't exist in EPL
+- `404 Not Found` if such teams doesn't exist in EPL, or profit is not
+ float
 
 **Example requests**
 
@@ -146,11 +143,12 @@ All responses will have a form
   "status": 200
 }
 ```
-> Notice that 
+> Notice that coefficients became lower, which means that the player would
+> benefit less from a placed bet
 
 <a name="example"></a>
 #### Example code snippet for developing websites
-The following code is placed in [example.py](https://github.com/maxymkuz/Sports-predictor/blob/master/API/examole.py)
+The following code can be found in [example.py](https://github.com/maxymkuz/Sports-predictor/blob/master/API/examole.py)
 ```python3
 import requests
 
