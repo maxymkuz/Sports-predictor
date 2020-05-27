@@ -37,9 +37,14 @@ teams = ['Arsenal',
 @app.route("/")
 def index():
     """Send basic responce"""
-    return f'Hello!, here is the list of available teams": ' \
-           f'\n\n{", ".join(teams)}' \
-           f'Here is an example call '
+    return """<div><h3>Hey! Here is the list of crrently available 
+    teams:</h3> <ul><li>Arsenal</li><li>Aston Villa</li><li>Bournemouth</li>
+ <li>Brighton</li><li>Burnley</li><li>Chelsea</li><li>Crystal Palace</li>
+ <li>Everton</li><li>Leicester</li><li>Liverpool</li><li>Man City</li>
+ <li>Man United</li><li>Newcastle</li><li>Southampton</li><li>Tottenham</li>
+ <li>Watford</li><li>West Ham</li><li>Wolves</li></ul> 
+<p>Get-request example: <b>http://maxkuz.pythonanywhere.com/Liverpool
+/Tottenham/5.0</b></p></div>"""
 
 
 class TeamCoefficient(Resource):
@@ -124,8 +129,6 @@ api.add_resource(TeamCoefficient,
                  '/<string:hometeam>/<string:awayteam>/<float:profit>')
 api.add_resource(Coefficients,
                  '/<string:hometeam>/<string:awayteam>/<int:profit>')
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
